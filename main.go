@@ -2,6 +2,7 @@ package main
 
 import (
 	"adventofcode/day1"
+	"adventofcode/day2"
 	"fmt"
 
 	"github.com/fatih/color"
@@ -22,6 +23,9 @@ func main() {
 	switch dayAnswer {
 	case 1:
 		day1.DisplayExpenses()
+		return
+	case 2:
+		day2.FindErrors()
 		return
 	default:
 		color.Yellow(fmt.Sprintf("bad input...%v", dayAnswer))
