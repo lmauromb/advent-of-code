@@ -69,6 +69,32 @@ func findPair(unsortedArr []int) (int, int) {
 	return 0, 0
 }
 
+func findTriplet(unsortedArr []int) (int, int, int) {
+	sortedArr := bubbleSort(unsortedArr)
+
+	for i := 0; i < len(sortedArr); i++ {
+		var floorIndex = i + 1
+		var topIndex = len(sortedArr) - 1
+
+		for floorIndex < topIndex {
+			tipletSum := sortedArr[floorIndex] + sortedArr[topIndex] + sortedArr[i]
+			if tipletSum == goal {
+				return sortedArr[floorIndex], sortedArr[topIndex], sortedArr[i]
+			}
+			if tipletSum < goal {
+				floorIndex++
+				continue
+			}
+			if tipletSum > goal {
+				topIndex--
+				continue
+			}
+		}
+	}
+
+	return 0, 0, 0
+}
+
 // DisplayExpenses prints out input file
 func DisplayExpenses() {
 	expns, err := loadExpenses("./day1/input.json")
@@ -79,8 +105,14 @@ func DisplayExpenses() {
 
 	a, b := findPair(expns)
 
-	fmt.Println("Day 1")
+	fmt.Println("Day 1 Part I")
 	fmt.Printf("Pair: %v, %v\n", a, b)
 	fmt.Printf("Sum: %v\n", a+b)
 	fmt.Printf("Product: %v\n", a*b)
+
+	fmt.Println("Day 1 Part II")
+	a, b, c := findTriplet(expns)
+	fmt.Printf("Triplet: %v, %v, %v\n", a, b, c)
+	fmt.Printf("Sum: %v\n", a+b+c)
+	fmt.Printf("Product: %v\n", a*b*c)
 }

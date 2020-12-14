@@ -25,7 +25,7 @@ func main() {
 		day1.DisplayExpenses()
 		return
 	case 2:
-		day2.FindErrors()
+		day2.CountWords()
 		return
 	default:
 		color.Yellow(fmt.Sprintf("bad input...%v", dayAnswer))

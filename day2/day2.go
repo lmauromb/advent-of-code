@@ -31,7 +31,7 @@ func getLines(path string) ([]string, error) {
 	return lines, nil
 }
 
-func processLine(line string) bool {
+func checkRepetitions(line string) bool {
 	// Algorithm
 	// 1. Separate by spaces, get 3 words (min-max, letter, word)
 	// 2. Separate min-max using -, convert them to Int
@@ -56,9 +56,44 @@ func processLine(line string) bool {
 	return false
 }
 
-// FindErrors reads line by line the input file and returns the incorrect lines
-func FindErrors() {
+func checkIndexes(line string) bool {
+	// Algorithm
+	// 1. Separate by spaces, get 3 words (min-max, letter, word)
+	// 2. Separate min-max using -, convert them to Int
+	// 3. Using index, get the letter letter[0]
+	// 4. Using both indexes find if the password is valid, only one can be in the word
+
+	input := strings.Split(line, " ")
+	indexes := strings.Split(input[0], "-")
+	letterColon := strings.Split(input[1], "")
+	letter := letterColon[0]
+	word := input[2]
+
+	i, _ := strconv.Atoi(indexes[0])
+	j, _ := strconv.Atoi(indexes[1])
+
+	letterAtI := string(word[i-1])
+	letterAtJ := string(word[j-1])
+
+	if letterAtI == letter {
+		if letterAtJ == letter {
+			return false
+		}
+
+		return true
+	}
+
+	if letterAtJ == letter {
+		return true
+	}
+
+	return false
+}
+
+// CountWords reads line by line the input file and returns the incorrect lines
+func CountWords() {
 	var numberOfErrors int
+	var validPasswords int
 	lines, err := getLines(inputPath)
 	if err != nil {
 		fmt.Println(err)
@@ -66,12 +101,23 @@ func FindErrors() {
 	}
 
 	for _, line := range lines {
-		hasError := processLine(line)
+		hasError := checkRepetitions(line)
 
 		if hasError {
 			numberOfErrors++
 		}
 	}
 
-	fmt.Printf("Number of Errors: %v\n", numberOfErrors)
+	for _, line := range lines {
+		isValid := checkIndexes(line)
+
+		if isValid {
+			validPasswords++
+		}
+	}
+
+	fmt.Println("Day 2 Part I")
+	fmt.Printf("Number of Errors in Passwords: %v\n", numberOfErrors)
+	fmt.Println("Day 2 Part II")
+	fmt.Printf("Valid Passwords: %v\n", validPasswords)
 }
